@@ -7,12 +7,13 @@
 # -----------------------------------------------------------------------------
 
 import os
+import urllib.parse
 
 from qiita_client import QiitaPlugin, QiitaCommand
 
-from .qp_dbbact import wordcloud_from_ASVs
+from .dbbact import wordcloud_from_ASVs
 
-__all__ = ['dbBact']
+__all__ = ['dbbact']
 
 # Initialize the plugin
 plugin = QiitaPlugin(
@@ -21,21 +22,24 @@ plugin = QiitaPlugin(
     'Achieving pan-microbiome biological insights',  # description
     publications=[('10.1093/nar/gkad527', '37326027')])  # publication
 
-req_params = {'deblur reference hit table': ('artifact', ['BIOM'])}
+
+req_params = {'deblur BIOM table': ('artifact', ['BIOM'])}
+URL = urllib.parse.quote_plus('http://dbbact.org')
+
 opt_params = {
-    'dbBact server URL': ['choice["http://dbbact.org"]', 'http://dbbact.org'],
-    'Minimum ASV sample occurence in feature-table': ['float', '0.3333'],
+    'dbBact server URL': ['choice:["%s"]' % URL, URL],
+    'Minimum ASV sample occurence in feature-table': ['float', '0.333'],
     'Wordcloud width': ['integer', '400'],
     'Wordcloud height': ['integer', '200'],
-    'Wordcloud background color': ['choice["white"]', 'white'],
-    'Wordcloud relative scaling': ['float': '0.5'],
+    'Wordcloud background color': ['choice:["white"]', 'white'],
+    'Wordcloud relative scaling': ['float', '0.5']
 }
 
-outputs = {'dbBact wordcloud': 'Wordcloud'}
+outputs = {'dbBact wordcloud': 'BIOM'}
 dflt_param_set = {
     'Defaults': {
-        'dbBact server URL': '"http://dbbact.org',
-        'Minimum ASV sample occurence in feature-table': float(1/3),
+        'dbBact server URL': URL,
+        'Minimum ASV sample occurence in feature-table': 0.333,
         'Wordcloud width': 400,
         'Wordcloud height': 200,
         'Wordcloud background color': "white",
@@ -43,8 +47,8 @@ dflt_param_set = {
     }
 }
 dbbact_wordcloud_cmd = QiitaCommand(
-    'dbBact 2024.03',  # The command name
-    'wordlouds from ASVs',  # The command description
+    'Wordcloud from ASV sequences',  # The command name
+    'Query for enriched terms in dbBact for a set of ASV sequences',  # The command description
     wordcloud_from_ASVs,  # function : callable
     req_params, opt_params, outputs, dflt_param_set)
 
