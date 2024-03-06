@@ -19,7 +19,7 @@ classes = """
     Topic :: Software Development :: Libraries :: Application Frameworks
     Topic :: Software Development :: Libraries :: Python Modules
     Programming Language :: Python
-    Programming Language :: Python :: 3.9
+    Programming Language :: Python :: 3.11
     Programming Language :: Python :: Implementation :: CPython
     Operating System :: POSIX :: Linux
     Operating System :: MacOS :: MacOS X
@@ -40,14 +40,15 @@ setup(name='qp-dbbact',
       test_suite='nose.collector',
       packages=['qp_dbbact'],
       package_data={'qp_dbbact': [
-          #'../support_files/sepp/*.json',
-          #'../support_files/sepp/*.py',
-          #'../support_files/sepp/reference_alignment_tiny.fasta',
-          #'../support_files/sepp/reference_phylogeny_tiny.nwk'
+          # '../support_files/sepp/*.json',
+          # '../support_files/sepp/*.py',
+          # '../support_files/sepp/reference_alignment_tiny.fasta',
+          # '../support_files/sepp/reference_phylogeny_tiny.nwk'
       ]},
-      scripts=['scripts/configure_deblur', 'scripts/start_deblur'],
+      scripts=['scripts/configure_dbbact', 'scripts/start_dbbact'],
       extras_require={'test': ["nose >= 0.10.1", "pep8"]},
       install_requires=['click', 'scikit-bio', 'pandas', 'future',
+                        'biom-format', 'wordcloud', 
                         'qiita-files @ https://github.com/'
                         'qiita-spots/qiita-files/archive/master.zip',
                         'qiita_client @ https://github.com/qiita-spots/'
