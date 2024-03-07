@@ -80,7 +80,7 @@ jobs:
         shell: bash -l {0}
         run: |
           conda create --quiet --yes -n qp-dbbact python=3.11 pip
-          conda activate qp-deblur
+          conda activate qp-dbbact
           conda install --quiet --yes -c bioconda -c biocore scikit-bio biom-format pandas wordcloud
 
           export QIITA_SERVER_CERT=`pwd`/qiita-dev/qiita_core/support_files/server.crt
@@ -89,7 +89,7 @@ jobs:
           pip --quiet install .
           pip --quiet install coveralls
 
-          configure_dbbact --env-script "source /home/runner/.profile; conda activate qp-deblur" --server-cert $QIITA_SERVER_CERT
+          configure_dbbact --env-script "source /home/runner/.profile; conda activate qp-dbbact" --server-cert $QIITA_SERVER_CERT
 
           echo "Available Qiita plugins"
           ls ~/.qiita_plugins/
@@ -129,7 +129,7 @@ jobs:
         env:
           COVER_PACKAGE: ${{ matrix.cover_package }}
         run: |
-          conda activate qp-deblur
+          conda activate qp-dbbact
           export QIITA_SERVER_CERT=`pwd`/qiita-dev/qiita_core/support_files/server.crt
           export QIITA_CONFIG_FP=`pwd`/qiita-dev/qiita_core/support_files/config_test_local.cfg
 
