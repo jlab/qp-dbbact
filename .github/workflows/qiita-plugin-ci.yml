@@ -67,7 +67,7 @@ jobs:
           conda env list
           conda activate qiita
           pip install -U pip
-          pip install sphinx sphinx-bootstrap-theme nose-timer Click coverage
+          pip install sphinx sphinx-bootstrap-theme nose2-timer Click coverage
 
       - name: Qiita install
         shell: bash -l {0}
@@ -135,7 +135,7 @@ jobs:
 
           export PYTHONWARNINGS="ignore:Certificate for localhost has no \`subjectAltName\`"
 
-          nosetests --with-doctest --with-coverage --cover-package=qp_dbbact
+          nose2 --with-doctest --with-coverage --cover-package=qp_dbbact
 
       - uses: codecov/codecov-action@v1
         with:
