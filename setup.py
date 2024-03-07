@@ -48,7 +48,7 @@ setup(name='qp-dbbact',
       scripts=['scripts/configure_dbbact', 'scripts/start_dbbact'],
       extras_require={'test': ["nose >= 0.10.1", "pep8"]},
       install_requires=['click', 'scikit-bio', 'pandas', 'future',
-                        'biom-format', 'wordcloud', 
+                        'biom-format', 'wordcloud',
                         'qiita-files @ https://github.com/'
                         'qiita-spots/qiita-files/archive/master.zip',
                         'qiita_client @ https://github.com/qiita-spots/'
