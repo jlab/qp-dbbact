@@ -85,9 +85,15 @@ def wordcloud_from_ASVs(qclient, job_id, parameters, out_dir):
 
     Notes
     -----
-    The code will check if the artifact has a preprocessed_demux element, if
-    not it will use the preprocessed_fastq. We prefer to work with the
-    preprocessed_demux as running time will be greatly improved
+    The code first checks if the provided biom artifact was produced by deblur
+    to ensure that the features are actual DNA sequences. To double check, we
+    next test if a biom filepath is given. If so, the index is tested to contain
+    only A C G T letters, i.e. are ASV sequences. Depending on the
+    'Minimum ASV sample occurence in feature-table' parameter, a subset of
+    features is used to query F-scores against the dbBact server. The result
+    will be saved as a *.tsv file and rendered into a *.png and *.svg image.
+    We also obtain some stats from the server about database size and query
+    date and save that as stats.tsv for reference.
     """
     NUM_STEPS = 4
 
@@ -144,17 +150,19 @@ def wordcloud_from_ASVs(qclient, job_id, parameters, out_dir):
 
     qclient.update_job_step(job_id, "Step 4 of %i: render image" % (NUM_STEPS))
     fp_png = join(out_dir, 'wordcloud.png')
-    fp_svg = join(out_dir, 'wordcloud.svg')
-    fig = plt.figure()
+    DPI = 100
+    fig = plt.figure(figsize=(parameters['Wordcloud width']/DPI, parameters['Wordcloud height']/DPI), dpi=DPI)
     plt.imshow(cloud)
     plt.axis("off")
     fig.tight_layout()
     fig.savefig(fp_png)
-    fig.savefig(fp_svg)
+    fp_svg = join(out_dir, 'wordcloud.svg')
+    with open(fp_svg, 'w') as SVG:
+        SVG.write(cloud.to_svg(embed_font=True))
 
     # also save actual f-scores as table
     fp_fscores = join(out_dir, "fscores.tsv")
-    pd.Series(fscores, name='F-score').to_csv(fp_fscores, sep="\t")
+    pd.Series(fscores, name='F-score').to_csv(fp_fscores, sep="\t", index_label='term')
 
     # obtain some stats from dbBact about database volume
     dbbact_stats = requests.get('http://api.dbbact.org/stats/stats')
@@ -163,7 +171,7 @@ def wordcloud_from_ASVs(qclient, job_id, parameters, out_dir):
     dbbact_stats = dbbact_stats.json()['stats']
     dbbact_stats['query_timestamp'] = str(datetime.datetime.now())
     fp_stats = join(out_dir, "stats.tsv")
-    pd.Series(dbbact_stats).to_csv(fp_stats, sep="\t")
+    pd.Series(dbbact_stats).to_csv(fp_stats, sep="\t", header=None)
 
     ainfo = [ArtifactInfo('dbBact wordcloud', 'BIOM',
                           [(fp_png, 'biom'),
