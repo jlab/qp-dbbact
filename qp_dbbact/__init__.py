@@ -12,7 +12,7 @@ from qiita_client import QiitaPlugin, QiitaCommand
 
 from .dbbact import wordcloud_from_ASVs
 
-__all__ = ['dbbact']
+__all__ = ['wordcloud_from_ASVs']
 
 # Initialize the plugin
 plugin = QiitaPlugin(

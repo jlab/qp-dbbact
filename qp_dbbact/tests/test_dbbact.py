@@ -94,7 +94,7 @@ class WordcloudFromASVsTests(PluginTestCase):
         data = {'user': 'demo@microbio.me',
                 'command': dumps([plugin.name,
                                   plugin.version,
-                                  'Wordcloud from ASV sequences 6']),
+                                  'Wordcloud from ASV sequences']),
                 'status': 'running',
                 'parameters': dumps(self.params)}
         jid = self.qclient.post('/apitest/processing_job/', data=data)['job']
