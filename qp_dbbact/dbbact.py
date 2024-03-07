@@ -65,6 +65,20 @@ def _get_color(word, font_size, position, orientation, font_path, random_state,
     return '#%s%s%s' % (red, green, blue)
 
 
+def render_wordcloud_png(wordcloud, fp_png: str, width: int, height: int,
+                         DPI: int = 100):
+    fig = plt.figure(figsize=(width/DPI, height/DPI), dpi=DPI)
+    plt.imshow(wordcloud)
+    plt.axis("off")
+    fig.tight_layout()
+    fig.savefig(fp_png)
+
+
+def render_wordcloud_svg(wordcloud, fp_svg: str):
+    with open(fp_svg, 'w') as SVG:
+        SVG.write(wordcloud.to_svg(embed_font=True))
+
+
 def wordcloud_from_ASVs(qclient, job_id, parameters, out_dir):
     """Query for enriched terms in dbBact for a set of ASV sequences.
 
@@ -150,7 +164,7 @@ def wordcloud_from_ASVs(qclient, job_id, parameters, out_dir):
     dbbact = requests.get('%s/sequences_fscores' % urllib.parse.unquote_plus(
         parameters['dbBact server URL']), json={'sequences': sel_features})
     if dbbact.status_code != 200:
-        return False, None, dbbact.content.decode('ascii')
+        return False, None, dbbact.content.decode("utf-8")
     fscores = dbbact.json()
 
     qclient.update_job_step(
@@ -168,16 +182,10 @@ def wordcloud_from_ASVs(qclient, job_id, parameters, out_dir):
     qclient.update_job_step(
         job_id, "Step 4 of %i: render image" % (NUM_STEPS))
     fp_png = join(out_dir, 'wordcloud.png')
-    DPI = 100
-    fig = plt.figure(figsize=(parameters['Wordcloud width']/DPI,
-                              parameters['Wordcloud height']/DPI), dpi=DPI)
-    plt.imshow(cloud)
-    plt.axis("off")
-    fig.tight_layout()
-    fig.savefig(fp_png)
+    render_wordcloud_png(cloud, fp_png, parameters['Wordcloud width'],
+                         parameters['Wordcloud height'])
     fp_svg = join(out_dir, 'wordcloud.svg')
-    with open(fp_svg, 'w') as SVG:
-        SVG.write(cloud.to_svg(embed_font=True))
+    render_wordcloud_svg(cloud, fp_svg)
 
     # also save actual f-scores as table
     fp_fscores = join(out_dir, "fscores.tsv")
@@ -185,9 +193,10 @@ def wordcloud_from_ASVs(qclient, job_id, parameters, out_dir):
         fp_fscores, sep="\t", index_label='term')
 
     # obtain some stats from dbBact about database volume
-    dbbact_stats = requests.get('http://api.dbbact.org/stats/stats')
+    dbbact_stats = requests.get('%s/stats/stats' % urllib.parse.unquote_plus(
+        parameters['dbBact api URL']))
     if dbbact_stats.status_code != 200:
-        return False, None, dbbact.content.decode('ascii')
+        return False, None, dbbact.content.decode("utf-8")
     dbbact_stats = dbbact_stats.json()['stats']
     dbbact_stats['query_timestamp'] = str(datetime.datetime.now())
     fp_stats = join(out_dir, "stats.tsv")
