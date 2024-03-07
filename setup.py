@@ -37,7 +37,7 @@ setup(name='qp-dbbact',
       author="Qiita development team",
       author_email="qiita.help@gmail.com",
       url='https://github.com/qiita-spots/qp-dbbact',
-      test_suite='nose.collector',
+      test_suite='nose2.collector.collector',
       packages=['qp_dbbact'],
       package_data={'qp_dbbact': [
           # '../support_files/sepp/*.json',
@@ -46,7 +46,7 @@ setup(name='qp-dbbact',
           # '../support_files/sepp/reference_phylogeny_tiny.nwk'
       ]},
       scripts=['scripts/configure_dbbact', 'scripts/start_dbbact'],
-      extras_require={'test': ["nose >= 0.10.1", "pep8"]},
+      extras_require={'test': ["nose2", "pep8"]},
       install_requires=['click', 'scikit-bio', 'pandas', 'future',
                         'biom-format', 'wordcloud',
                         'qiita-files @ https://github.com/'
