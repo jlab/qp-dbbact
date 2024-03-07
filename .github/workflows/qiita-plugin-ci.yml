@@ -67,7 +67,7 @@ jobs:
           conda env list
           conda activate qiita
           pip install -U pip
-          pip install sphinx sphinx-bootstrap-theme nose2-timer Click coverage
+          pip install sphinx sphinx-bootstrap-theme nose-timer Click coverage
 
       - name: Qiita install
         shell: bash -l {0}
@@ -81,7 +81,7 @@ jobs:
         run: |
           conda create --quiet --yes -n qp-dbbact python=3.11 pip
           conda activate qp-dbbact
-          conda install --quiet --yes -c bioconda -c biocore scikit-bio biom-format pandas wordcloud
+          conda install --quiet --yes -c bioconda -c biocore scikit-bio biom-format pandas wordcloud nose2
 
           export QIITA_SERVER_CERT=`pwd`/qiita-dev/qiita_core/support_files/server.crt
           export QIITA_CONFIG_FP=`pwd`/qiita-dev/qiita_core/support_files/config_test_local.cfg
