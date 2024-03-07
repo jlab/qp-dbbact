@@ -6,7 +6,6 @@
 # The full license is in the file LICENSE, distributed with this software.
 # -----------------------------------------------------------------------------
 
-import os
 import urllib.parse
 
 from qiita_client import QiitaPlugin, QiitaCommand
@@ -48,7 +47,8 @@ dflt_param_set = {
 }
 dbbact_wordcloud_cmd = QiitaCommand(
     'Wordcloud from ASV sequences',  # The command name
-    'Query for enriched terms in dbBact for a set of ASV sequences',  # The command description
+    # The command description
+    'Query for enriched terms in dbBact for a set of ASV sequences',
     wordcloud_from_ASVs,  # function : callable
     req_params, opt_params, outputs, dflt_param_set)
 
