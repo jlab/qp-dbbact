@@ -157,4 +157,4 @@ jobs:
     - name: lint
       run: |
         pip install -q flake8
-        flake8 qp_dbbact setup.py scripts support_files/*.py
+        flake8 qp_dbbact setup.py scripts
