@@ -135,7 +135,7 @@ jobs:
 
           export PYTHONWARNINGS="ignore:Certificate for localhost has no \`subjectAltName\`"
 
-          nosetest --with-doctest --with-coverage --cover-package=qp_dbbact
+          nosetests --with-doctest --with-coverage --cover-package=qp_dbbact
 
       - uses: codecov/codecov-action@v1
         with:
