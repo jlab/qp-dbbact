@@ -11,6 +11,7 @@ from os.path import join
 from os import makedirs
 from qiita_client import ArtifactInfo
 from shutil import copyfile
+from json import loads
 
 
 def validate(qclient, job_id, parameters, out_dir):
@@ -34,16 +35,21 @@ def validate(qclient, job_id, parameters, out_dir):
         The artifact information, if successful
         The error message, if not successful
     """
-
+    prep_id = parameters['template']
     files = loads(parameters['files'])
     a_type = parameters['artifact_type']
+
+    qclient.update_job_step(job_id, "Step 1: Collecting prep information")
+    prep_info = qclient.get("/qiita_db/prep_template/%s/data/" % prep_id)
+    prep_info = prep_info['data']
 
     if a_type != "WordCloud":
         return (
             False, None,
             "Unknown artifact type %s. Supported types: WordCloud" % a_type)
 
-    # filepaths = []
+    # convert filepaths from {'type': [str]} to [(str, type)]
+    filepaths = [(fp, t) for t, fps in files.items() for fp in fps]
 
     return True, [ArtifactInfo(None, 'WordCloud', filepaths)], ""
 
