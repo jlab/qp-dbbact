@@ -199,13 +199,14 @@ def wordcloud_from_ASVs(qclient, job_id, parameters, out_dir):
         return False, None, dbbact.content.decode("utf-8")
     dbbact_stats = dbbact_stats.json()['stats']
     dbbact_stats['query_timestamp'] = str(datetime.datetime.now())
+    dbbact_stats['queried_with_num_ASVs'] = len(sel_features)
     fp_stats = join(out_dir, "stats.tsv")
     pd.Series(dbbact_stats).to_csv(fp_stats, sep="\t", header=None)
 
-    ainfo = [ArtifactInfo('dbBact wordcloud', 'BIOM',
-                          [(fp_png, 'biom'),
-                           (fp_svg, 'biom'),
-                           (fp_fscores, 'plain_text'),
-                           (fp_stats, 'plain_text')])]
+    ainfo = [ArtifactInfo('dbBact wordcloud', 'WordCloud',
+                          [(fp_png, 'image_bitmap'),
+                           (fp_svg, 'image_vector'),
+                           (fp_fscores, 'tabular_text'),
+                           (fp_stats, 'log')])]
 
     return True, ainfo, ""

@@ -73,14 +73,14 @@ class WordcloudFromASVsTests(PluginTestCase):
         artifact_tmp_dir = mkdtemp()
         self._clean_up_files.append(artifact_tmp_dir)
         final_biom_hit = join(artifact_tmp_dir, 'reference-hit.biom')
-        copyfile('support_files/tiny_16srefhit/remapped_reference-hit.biom',
+        copyfile('test_data/reference-hit.biom',
                  final_biom_hit)
         final_seqs_hit = join(artifact_tmp_dir, 'reference-hit.seqs.fa')
-        copyfile('support_files/tiny_16srefhit/remapped_reference-hit.seqs.fa',
+        copyfile('test_data/reference-hit.seqs.fa',
                  final_seqs_hit)
         fp_phylogeny = join(artifact_tmp_dir, 'insertion_tree.relabelled.tre')
-        copyfile(('support_files/tiny_16srefhit/'
-                  'remapped_insertion_tree.relabelled.tre'), fp_phylogeny)
+        copyfile(('test_data/'
+                  'insertion_tree.relabelled.tre'), fp_phylogeny)
         data = {
             'filepaths': dumps([(final_biom_hit, 'biom'),
                                 (final_seqs_hit, 'preprocessed_fasta'),
@@ -131,14 +131,14 @@ class WordcloudFromASVsTests(PluginTestCase):
         artifact_tmp_dir = mkdtemp()
         self._clean_up_files.append(artifact_tmp_dir)
         final_biom_hit = join(artifact_tmp_dir, 'reference-hit.biom')
-        copyfile('support_files/tiny_16srefhit/remapped_reference-hit.biom',
+        copyfile('test_data/reference-hit.biom',
                  final_biom_hit)
         final_seqs_hit = join(artifact_tmp_dir, 'reference-hit.seqs.fa')
-        copyfile('support_files/tiny_16srefhit/remapped_reference-hit.seqs.fa',
+        copyfile('test_data/reference-hit.seqs.fa',
                  final_seqs_hit)
         fp_phylogeny = join(artifact_tmp_dir, 'insertion_tree.relabelled.tre')
-        copyfile(('support_files/tiny_16srefhit/'
-                  'remapped_insertion_tree.relabelled.tre'), fp_phylogeny)
+        copyfile(('test_data/'
+                  'insertion_tree.relabelled.tre'), fp_phylogeny)
         data = {
             'filepaths': dumps([(final_seqs_hit, 'preprocessed_fasta'),
                                 (fp_phylogeny, 'plain_text')]),
@@ -186,14 +186,14 @@ class WordcloudFromASVsTests(PluginTestCase):
         artifact_tmp_dir = mkdtemp()
         self._clean_up_files.append(artifact_tmp_dir)
         final_biom_hit = join(artifact_tmp_dir, 'reference-hit.biom')
-        copyfile('support_files/nonDNAseq.biom',
+        copyfile('test_data/nonDNAseq.biom',
                  final_biom_hit)
         final_seqs_hit = join(artifact_tmp_dir, 'reference-hit.seqs.fa')
-        copyfile('support_files/tiny_16srefhit/remapped_reference-hit.seqs.fa',
+        copyfile('test_data/reference-hit.seqs.fa',
                  final_seqs_hit)
         fp_phylogeny = join(artifact_tmp_dir, 'insertion_tree.relabelled.tre')
-        copyfile(('support_files/tiny_16srefhit/'
-                  'remapped_insertion_tree.relabelled.tre'), fp_phylogeny)
+        copyfile(('test_data/'
+                  'insertion_tree.relabelled.tre'), fp_phylogeny)
         data = {
             'filepaths': dumps([(final_biom_hit, 'biom'),
                                 (final_seqs_hit, 'preprocessed_fasta'),
@@ -243,14 +243,14 @@ class WordcloudFromASVsTests(PluginTestCase):
         artifact_tmp_dir = mkdtemp()
         self._clean_up_files.append(artifact_tmp_dir)
         final_biom_hit = join(artifact_tmp_dir, 'reference-hit.biom')
-        copyfile('support_files/tiny_16srefhit/remapped_reference-hit.biom',
+        copyfile('test_data/reference-hit.biom',
                  final_biom_hit)
         final_seqs_hit = join(artifact_tmp_dir, 'reference-hit.seqs.fa')
-        copyfile('support_files/tiny_16srefhit/remapped_reference-hit.seqs.fa',
+        copyfile('test_data/reference-hit.seqs.fa',
                  final_seqs_hit)
         fp_phylogeny = join(artifact_tmp_dir, 'insertion_tree.relabelled.tre')
-        copyfile(('support_files/tiny_16srefhit/'
-                  'remapped_insertion_tree.relabelled.tre'), fp_phylogeny)
+        copyfile(('test_data/'
+                  'insertion_tree.relabelled.tre'), fp_phylogeny)
         data = {
             'filepaths': dumps([(final_biom_hit, 'biom'),
                                 (final_seqs_hit, 'preprocessed_fasta'),
@@ -333,14 +333,14 @@ class WordcloudFromASVsTests(PluginTestCase):
         artifact_tmp_dir = mkdtemp()
         self._clean_up_files.append(artifact_tmp_dir)
         final_biom_hit = join(artifact_tmp_dir, 'reference-hit.biom')
-        copyfile('support_files/tiny_16srefhit/remapped_reference-hit.biom',
+        copyfile('test_data/reference-hit.biom',
                  final_biom_hit)
         final_seqs_hit = join(artifact_tmp_dir, 'reference-hit.seqs.fa')
-        copyfile('support_files/tiny_16srefhit/remapped_reference-hit.seqs.fa',
+        copyfile('test_data/reference-hit.seqs.fa',
                  final_seqs_hit)
         fp_phylogeny = join(artifact_tmp_dir, 'insertion_tree.relabelled.tre')
-        copyfile(('support_files/tiny_16srefhit/'
-                  'remapped_insertion_tree.relabelled.tre'), fp_phylogeny)
+        copyfile(('test_data/'
+                  'insertion_tree.relabelled.tre'), fp_phylogeny)
         data = {
             'filepaths': dumps([(final_biom_hit, 'biom'),
                                 (final_seqs_hit, 'preprocessed_fasta'),
@@ -374,10 +374,10 @@ class WordcloudFromASVsTests(PluginTestCase):
         self.assertEqual("dbBact wordcloud", ainfo[0].output_name)
 
         self.assertEqual(
-            [(join(out_dir, 'wordcloud.png'), 'biom'),
-             (join(out_dir, 'wordcloud.svg'), 'biom'),
-             (join(out_dir, 'fscores.tsv'), 'plain_text'),
-             (join(out_dir, 'stats.tsv'), 'plain_text')], ainfo[0].files)
+            [(join(out_dir, 'wordcloud.png'), 'image_bitmap'),
+             (join(out_dir, 'wordcloud.svg'), 'image_vector'),
+             (join(out_dir, 'fscores.tsv'), 'tabular_text'),
+             (join(out_dir, 'stats.tsv'), 'log')], ainfo[0].files)
 
 
 class GetColorTests(TestCase):
