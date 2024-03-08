@@ -39,7 +39,7 @@ jobs:
         uses: conda-incubator/setup-miniconda@v2
         with:
           auto-update-conda: true
-          python-version: 3.11
+          python-version: 3.9
 
       - name: Basic dependencies install
         env:
@@ -55,7 +55,7 @@ jobs:
 
           # pull out the port so we can modify the configuration file easily
           pgport=${{ job.services.postgres.ports[5432] }}
-          sed -i "s/PORT = 5432/PORT = $pgport/" qiita_core/support_files/config_test.cfg
+          sed -i "s/PORT = 5432/PORT = $pgport/" qiita-dev/qiita_core/support_files/config_test.cfg
 
           # PGPASSWORD is read by pg_restore, which is called by the build_db process.
           export PGPASSWORD=postgres
@@ -79,9 +79,9 @@ jobs:
       - name: Install Qiita plugins
         shell: bash -l {0}
         run: |
-          conda create --quiet --yes -n qp-dbbact python=3.11 pip
-          conda activate qp-deblur
-          # conda install --quiet --yes -c bioconda -c biocore "VSEARCH=2.7.0" MAFFT=7.310 SortMeRNA=2.0 fragment-insertion numpy==1.13.0 cython
+          conda create --quiet --yes -n qp-dbbact python=3.9 pip
+          conda activate qp-dbbact
+          conda install --quiet --yes -c bioconda -c biocore scikit-bio biom-format pandas wordcloud nose
 
           export QIITA_SERVER_CERT=`pwd`/qiita-dev/qiita_core/support_files/server.crt
           export QIITA_CONFIG_FP=`pwd`/qiita-dev/qiita_core/support_files/config_test_local.cfg
@@ -89,7 +89,7 @@ jobs:
           pip --quiet install .
           pip --quiet install coveralls
 
-          configure_dbbact --env-script "source /home/runner/.profile; conda activate qp-deblur" --server-cert $QIITA_SERVER_CERT
+          configure_dbbact --env-script "source /home/runner/.profile; conda activate qp-dbbact" --server-cert $QIITA_SERVER_CERT
 
           echo "Available Qiita plugins"
           ls ~/.qiita_plugins/
@@ -129,7 +129,7 @@ jobs:
         env:
           COVER_PACKAGE: ${{ matrix.cover_package }}
         run: |
-          conda activate qp-deblur
+          conda activate qp-dbbact
           export QIITA_SERVER_CERT=`pwd`/qiita-dev/qiita_core/support_files/server.crt
           export QIITA_CONFIG_FP=`pwd`/qiita-dev/qiita_core/support_files/config_test_local.cfg
 
@@ -137,7 +137,7 @@ jobs:
 
           nosetests --with-doctest --with-coverage --cover-package=qp_dbbact
 
-      - uses: codecov/codecov-action@v1
+      - uses: codecov/codecov-action@v3
         with:
          token: ${{ secrets.CODECOV_TOKEN }}
          file: codecov.yml
@@ -156,4 +156,4 @@ jobs:
     - name: lint
       run: |
         pip install -q flake8
-        flake8 qp_dbbact setup.py scripts support_files/*.py
+        flake8 qp_dbbact setup.py scripts
