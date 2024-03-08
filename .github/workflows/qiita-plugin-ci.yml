@@ -137,6 +137,7 @@ jobs:
 
           cat `pwd`/qiita-dev/qiita_core/support_files/ci_rootca.crt >> ${CONDA_PREFIX}/lib/python3.9/site-packages/certifi/cacert.pem
           cat `pwd`/qiita-dev/qiita_core/support_files/ci_rootca.crt >>  ${CONDA_PREFIX}/../qiita/lib/python3.9/site-packages/certifi/cacert.pem
+          find / -name "cacert.pem" 2> /dev/null
           cat `pwd`/qiita-dev/qiita_core/support_files/ci_rootca.crt >>  ${CONDA_PREFIX}/../../lib/python3.9/site-packages/certifi/cacert.pem
           nosetests --with-doctest --with-coverage --cover-package=qp_dbbact
 
