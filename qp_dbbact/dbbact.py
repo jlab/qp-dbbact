@@ -150,11 +150,12 @@ def wordcloud_from_ASVs(qclient, job_id, parameters, out_dir):
 
     # only consider ASVs/features that at least occur in XXX of the
     # samples (default: 1/3)
+    sample_ratio = float(feature_table.shape[1]) * float(parameters[
+        'Minimum ASV sample occurence in feature-table'])
     sel_features = [feature
                     for feature, occ
                     in (feature_table.to_dataframe() > 0).sum(axis=1).items()
-                    if occ >= feature_table.shape[1] * parameters[
-                        'Minimum ASV sample occurence in feature-table']]
+                    if float(occ) >= sample_ratio]
     qclient.update_job_step(
         job_id,
         "Step 2 of %i: query %s with %i features (total was %i)" % (
@@ -169,10 +170,11 @@ def wordcloud_from_ASVs(qclient, job_id, parameters, out_dir):
 
     qclient.update_job_step(
         job_id, "Step 3 of %i: generate wordcloud" % (NUM_STEPS))
-    wc = WordCloud(width=parameters['Wordcloud width'],
-                   height=parameters['Wordcloud height'],
+    wc = WordCloud(width=int(parameters['Wordcloud width']),
+                   height=int(parameters['Wordcloud height']),
                    background_color=parameters['Wordcloud background color'],
-                   relative_scaling=parameters['Wordcloud relative scaling'],
+                   relative_scaling=float(
+                       parameters['Wordcloud relative scaling']),
                    stopwords=set(),
                    color_func=lambda *x, **y: _get_color(
                       *x, **y, fscore=fscores, recall={},
@@ -182,8 +184,8 @@ def wordcloud_from_ASVs(qclient, job_id, parameters, out_dir):
     qclient.update_job_step(
         job_id, "Step 4 of %i: render image" % (NUM_STEPS))
     fp_png = join(out_dir, 'wordcloud.png')
-    render_wordcloud_png(cloud, fp_png, parameters['Wordcloud width'],
-                         parameters['Wordcloud height'])
+    render_wordcloud_png(cloud, fp_png, int(parameters['Wordcloud width']),
+                         int(parameters['Wordcloud height']))
     fp_svg = join(out_dir, 'wordcloud.svg')
     render_wordcloud_svg(cloud, fp_svg)
 
