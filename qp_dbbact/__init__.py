@@ -36,7 +36,7 @@ opt_params = {
     'Wordcloud relative scaling': ['float', '0.5']
 }
 
-outputs = {'dbBact wordcloud': 'BIOM'}
+outputs = {'dbBact wordcloud': 'WordCloud'}
 dflt_param_set = {
     'Defaults': {
         'dbBact server URL': URL,
