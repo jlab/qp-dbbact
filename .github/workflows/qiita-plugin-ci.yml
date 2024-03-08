@@ -136,7 +136,7 @@ jobs:
           export PYTHONWARNINGS="ignore:Certificate for localhost has no \`subjectAltName\`"
 
           cat `pwd`/qiita-dev/qiita_core/support_files/ci_rootca.crt >> ${CONDA_PREFIX}/lib/python3.9/site-packages/certifi/cacert.pem
-          ls -la ${CONDA_PREFIX}/../qiita/lib/
+          cat `pwd`/qiita-dev/qiita_core/support_files/ci_rootca.crt >>  ${CONDA_PREFIX}/../qiita/lib/python3.9/site-packages/certifi/cacert.pem
           nosetests --with-doctest --with-coverage --cover-package=qp_dbbact
 
       - uses: codecov/codecov-action@v3
