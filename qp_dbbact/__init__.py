@@ -27,9 +27,9 @@ URL = 'http://dbbact.org'
 APIURL = 'http://api.dbbact.org'
 
 opt_params = {
-    'dbBact server URL': ['choice:["%s"]' % URL,
+    'dbBact server URL': ['choice:["%s"]' % urllib.parse.quote_plus(URL),
                           urllib.parse.quote_plus(URL)],
-    'dbBact api URL': ['choice:["%s"]' % APIURL,
+    'dbBact api URL': ['choice:["%s"]' % urllib.parse.quote_plus(APIURL),
                        urllib.parse.quote_plus(APIURL)],
     'Minimum ASV sample occurence in feature-table': ['float', '0.333'],
     'Wordcloud width': ['integer', '400'],
