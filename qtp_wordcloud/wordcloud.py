@@ -87,7 +87,7 @@ def _generate_html_code(fp_stats, fp_fscores, url_dbbact):
     </head>
     <body>
         <div style="text-align: center;">
-            <img src = "wordcloud.svg" alt="%s"/>
+            <img src="wordcloud.svg" alt="%s" width="80%%"/>
         </div>
         <div style="">
             <h1>Query Statistics</h1>
@@ -168,7 +168,8 @@ def generate_html_summary(qclient, job_id, parameters, out_dir):
         if file not in filepaths.keys():
             raise ValueError("Cannot find file '%s'" % file)
     html = _generate_html_code(filepaths['log'][0],
-                               filepaths['tabular_text'][0], 'kurt')
+                               filepaths['tabular_text'][0],
+                               parameters['dbBact server URL'])
     of_fp = join(out_dir, "index.html")
     with open(of_fp, 'w') as of:
         of.write(html)
