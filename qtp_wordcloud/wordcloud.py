@@ -11,7 +11,7 @@ from os.path import join
 from os import makedirs
 from qiita_client import ArtifactInfo
 from shutil import copyfile
-from json import loads
+from json import loads, dumps
 
 
 def validate(qclient, job_id, parameters, out_dir):
@@ -122,8 +122,8 @@ def _generate_html_code(fp_stats, fp_fscores, url_dbbact):
             </table>
         </div>
     </body>
-</html>""" % ('support_files/css/bootstrap.min.css',
-              'support_files/css/normalize.css',
+</html>""" % ('css/bootstrap.min.css',
+              'css/normalize.css',
               'dbBact wordcloud of F-scores for ASVs',
               _indent(querystats), _indent(dbstats), _indent(fscores))
 
@@ -151,7 +151,6 @@ def generate_html_summary(qclient, job_id, parameters, out_dir):
         Ignored
         The error message, if not successful
     """
-
     # Step 1: gather file information from qiita using REST api
     artifact_id = parameters['input_data']
     qclient_url = "/qiita_db/artifacts/%s/" % artifact_id
@@ -170,17 +169,17 @@ def generate_html_summary(qclient, job_id, parameters, out_dir):
             raise ValueError("Cannot find file '%s'" % file)
     html = _generate_html_code(filepaths['log'][0],
                                filepaths['tabular_text'][0], 'kurt')
-
-    of_fp = join(out_dir, "artifact_%d.html" % artifact_id)
+    of_fp = join(out_dir, "index.html")
     with open(of_fp, 'w') as of:
         of.write(html)
 
     # copy support files
-    fp_dir = join(out_dir, 'support_files/css/')
+    fp_dir = join(out_dir, 'support_files/vendor/css/')
     makedirs(fp_dir, exist_ok=True)
-    copyfile('support_files/css/bootstrap.min.css',
+
+    copyfile('qtp_wordcloud/support_files/vendor/css/bootstrap.min.css',
              join(fp_dir, 'bootstrap.min.css'))
-    copyfile('support_files/css/normalize.css',
+    copyfile('qtp_wordcloud/support_files/vendor/css/normalize.css',
              join(fp_dir, 'normalize.css'))
 
     # Step 3: add the new file to the artifact using REST api
@@ -188,7 +187,7 @@ def generate_html_summary(qclient, job_id, parameters, out_dir):
     error_msg = ''
     try:
         qclient.patch(qclient_url, 'add', '/html_summary/',
-                      value=dumps({'html': of_fp, 'dir:': fp_dir}))
+                      value=dumps({'html': of_fp, 'dir': fp_dir}))
     except Exception as e:
         success = False
         error_msg = str(e)

@@ -40,8 +40,8 @@ setup(name='qp-dbbact',
       test_suite='nose2.collector.collector',
       packages=['qp_dbbact'],
       package_data={'qp_dbbact': [
-          'support_files/css/bootstrap.min.css',
-          'support_files/css/normalize.css',
+          'qtp_wordcloud/support_files/vendor/css/bootstrap.min.css',
+          'qtp_wordcloud/support_files/vendor/css/normalize.css',
           # '../support_files/sepp/reference_alignment_tiny.fasta',
           # '../support_files/sepp/reference_phylogeny_tiny.nwk'
       ]},
