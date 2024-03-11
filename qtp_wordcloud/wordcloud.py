@@ -169,7 +169,7 @@ def generate_html_summary(qclient, job_id, parameters, out_dir):
             raise ValueError("Cannot find file '%s'" % file)
     html = _generate_html_code(filepaths['log'][0],
                                filepaths['tabular_text'][0],
-                               parameters['dbBact server URL'])
+                               artifact_info['processing_parameters']['dbBact server URL'])
     of_fp = join(out_dir, "index.html")
     with open(of_fp, 'w') as of:
         of.write(html)
@@ -178,9 +178,10 @@ def generate_html_summary(qclient, job_id, parameters, out_dir):
     fp_dir = join(out_dir, 'support_files/vendor/css/')
     makedirs(fp_dir, exist_ok=True)
 
-    copyfile('qtp_wordcloud/support_files/vendor/css/bootstrap.min.css',
+    src_dir = os.path.dirname(os.path.realpath(__file__))
+    copyfile(join(src_dir, 'support_files/vendor/css/bootstrap.min.css'),
              join(fp_dir, 'bootstrap.min.css'))
-    copyfile('qtp_wordcloud/support_files/vendor/css/normalize.css',
+    copyfile(join(src_dir, 'support_files/vendor/css/normalize.css'),
              join(fp_dir, 'normalize.css'))
 
     # Step 3: add the new file to the artifact using REST api
