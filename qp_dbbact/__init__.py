@@ -23,12 +23,14 @@ plugin = QiitaPlugin(
 
 
 req_params = {'deblur BIOM table': ('artifact', ['BIOM'])}
-URL = urllib.parse.quote_plus('http://dbbact.org')
-APIURL = urllib.parse.quote_plus('http://api.dbbact.org')
+URL = 'http://dbbact.org'
+APIURL = 'http://api.dbbact.org'
 
 opt_params = {
-    'dbBact server URL': ['choice:["%s"]' % URL, URL],
-    'dbBact api URL': ['choice:["%s"]' % APIURL, APIURL],
+    'dbBact server URL': ['choice:["%s"]' % URL,
+                          urllib.parse.quote_plus(URL)],
+    'dbBact api URL': ['choice:["%s"]' % APIURL,
+                       urllib.parse.quote_plus(APIURL)],
     'Minimum ASV sample occurence in feature-table': ['float', '0.333'],
     'Wordcloud width': ['integer', '400'],
     'Wordcloud height': ['integer', '200'],
@@ -39,8 +41,8 @@ opt_params = {
 outputs = {'dbBact wordcloud': 'WordCloud'}
 dflt_param_set = {
     'Defaults': {
-        'dbBact server URL': URL,
-        'dbBact api URL': APIURL,
+        'dbBact server URL': urllib.parse.quote_plus(URL),
+        'dbBact api URL': urllib.parse.quote_plus(APIURL),
         'Minimum ASV sample occurence in feature-table': 0.333,
         'Wordcloud width': 400,
         'Wordcloud height': 200,
