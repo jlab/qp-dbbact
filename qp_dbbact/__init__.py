@@ -6,14 +6,13 @@
 # The full license is in the file LICENSE, distributed with this software.
 # -----------------------------------------------------------------------------
 
-import os
 import urllib.parse
 
 from qiita_client import QiitaPlugin, QiitaCommand
 
 from .dbbact import wordcloud_from_ASVs
 
-__all__ = ['dbbact']
+__all__ = ['wordcloud_from_ASVs']
 
 # Initialize the plugin
 plugin = QiitaPlugin(
@@ -24,10 +23,14 @@ plugin = QiitaPlugin(
 
 
 req_params = {'deblur BIOM table': ('artifact', ['BIOM'])}
-URL = urllib.parse.quote_plus('http://dbbact.org')
+URL = 'http://dbbact.org'
+APIURL = 'http://api.dbbact.org'
 
 opt_params = {
-    'dbBact server URL': ['choice:["%s"]' % URL, URL],
+    'dbBact server URL': ['choice:["%s"]' % urllib.parse.quote_plus(URL),
+                          urllib.parse.quote_plus(URL)],
+    'dbBact api URL': ['choice:["%s"]' % urllib.parse.quote_plus(APIURL),
+                       urllib.parse.quote_plus(APIURL)],
     'Minimum ASV sample occurence in feature-table': ['float', '0.333'],
     'Wordcloud width': ['integer', '400'],
     'Wordcloud height': ['integer', '200'],
@@ -35,10 +38,11 @@ opt_params = {
     'Wordcloud relative scaling': ['float', '0.5']
 }
 
-outputs = {'dbBact wordcloud': 'BIOM'}
+outputs = {'dbBact wordcloud': 'WordCloud'}
 dflt_param_set = {
     'Defaults': {
-        'dbBact server URL': URL,
+        'dbBact server URL': urllib.parse.quote_plus(URL),
+        'dbBact api URL': urllib.parse.quote_plus(APIURL),
         'Minimum ASV sample occurence in feature-table': 0.333,
         'Wordcloud width': 400,
         'Wordcloud height': 200,
@@ -48,7 +52,8 @@ dflt_param_set = {
 }
 dbbact_wordcloud_cmd = QiitaCommand(
     'Wordcloud from ASV sequences',  # The command name
-    'Query for enriched terms in dbBact for a set of ASV sequences',  # The command description
+    # The command description
+    'Query for enriched terms in dbBact for a set of ASV sequences',
     wordcloud_from_ASVs,  # function : callable
     req_params, opt_params, outputs, dflt_param_set)
 
